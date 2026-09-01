@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Core
 {
@@ -13,86 +14,87 @@ namespace Core
         public const float HOURS_PER_DAY = 24f;
         private const float _MINUTES_PER_HOUR = 60f;
 
-        [SerializeField] 
-        private SimulationConfig _config;
+        [SerializeField]
+        [FormerlySerializedAs("_config")]
+        LogisticsSettings config;
 
-        private float _hours;
-        private bool _isDay;
+        float hours;
+        bool isDay;
 
-        public float Hours => _hours;
-        public int Hour => (int)_hours;
-        public int Minute => (int)((_hours - Hour) * _MINUTES_PER_HOUR);
-        public bool IsDay => _isDay;
-        public bool IsNight => _isDay == false;
+        public float Hours => hours;
+        public int Hour => (int)hours;
+        public int Minute => (int)((hours - Hour) * _MINUTES_PER_HOUR);
+        public bool IsDay => isDay;
+        public bool IsNight => isDay == false;
 
-        private void Awake()
+        void Awake()
         {
-            if (_config == false)
+            if (config == false)
             {
-                Debug.LogError("GameTime needs a SimulationConfig assigned.");
+                Debug.LogError("GameTime needs a LogisticsSettings assigned.");
                 enabled = false;
                 return;
             }
 
-            _hours = _config.StartHour;
-            _isDay = IsHourInDay(_hours);
+            hours = config.StartHour;
+            isDay = IsHourInDay(hours);
             LogCurrentTime();
         }
 
-        private void Update()
+        void Update()
         {
-            if (_config == false)
+            if (config == false)
             {
                 return;
             }
 
-            bool wasDay = _isDay;
+            bool wasDay = isDay;
             int previousHour = Hour;
 
             AdvanceTime(Time.deltaTime);
-            _isDay = IsHourInDay(_hours);
+            isDay = IsHourInDay(hours);
 
             if (previousHour != Hour)
             {
                 LogCurrentTime();
             }
 
-            if (wasDay == false && _isDay)
+            if (wasDay == false && isDay)
             {
                 DayStarted?.Invoke();
                 LogPhase("Day started");
             }
 
-            if (wasDay && _isDay == false)
+            if (wasDay && isDay == false)
             {
                 NightStarted?.Invoke();
                 LogPhase("Night started");
             }
         }
 
-        private void AdvanceTime(float deltaTime)
+        void AdvanceTime(float deltaTime)
         {
-            float hoursPerSecond = HOURS_PER_DAY / _config.SecondsPerDay;
-            _hours += deltaTime * hoursPerSecond;
+            float hoursPerSecond = HOURS_PER_DAY / config.SecondsPerDay;
+            hours += deltaTime * hoursPerSecond;
 
-            while (_hours >= HOURS_PER_DAY)
+            while (hours >= HOURS_PER_DAY)
             {
-                _hours -= HOURS_PER_DAY;
+                hours -= HOURS_PER_DAY;
             }
         }
 
-        private bool IsHourInDay(float hours)
+        bool IsHourInDay(float hourOfDay)
         {
-            return hours >= _config.DayStartHour && hours < _config.NightStartHour;
+            return hourOfDay >= config.DayStartHour && hourOfDay < config.NightStartHour;
         }
 
-        private void LogCurrentTime()
+        void LogCurrentTime()
         {
-            string phaseName = _isDay ? "Day" : "Night";
+            string phaseName = isDay ? "Day" : "Night";
             LogPhase(phaseName);
         }
 
-        private void LogPhase(string phaseName)
+        void LogPhase(string phaseName)
         {
             int hour = Hour;
             int minute = Minute;

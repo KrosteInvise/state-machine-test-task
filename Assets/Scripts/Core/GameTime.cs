@@ -1,52 +1,45 @@
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 namespace Core
 {
-    [DisallowMultipleComponent]
-    [DefaultExecutionOrder(-100)]
     public class GameTime : MonoBehaviour
     {
         public event UnityAction DayStarted;
         public event UnityAction NightStarted;
 
-        public const float HOURS_PER_DAY = 24f;
-        private const float _MINUTES_PER_HOUR = 60f;
+        public const float HoursPerDay = 24f;
+        const float minutesPerHour = 60f;
 
-        [SerializeField]
-        [FormerlySerializedAs("_config")]
-        LogisticsSettings config;
-
+        LogisticsSettings settings;
         float hours;
         bool isDay;
 
         public float Hours => hours;
         public int Hour => (int)hours;
-        public int Minute => (int)((hours - Hour) * _MINUTES_PER_HOUR);
+        public int Minute => (int)((hours - Hour) * minutesPerHour);
         public bool IsDay => isDay;
         public bool IsNight => isDay == false;
 
-        void Awake()
+        public void Init(LogisticsSettings logisticsSettings)
         {
-            if (config == false)
+            if (logisticsSettings == false)
             {
                 Debug.LogError("GameTime needs a LogisticsSettings assigned.");
                 enabled = false;
                 return;
             }
 
-            hours = config.StartHour;
+            settings = logisticsSettings;
+            hours = settings.StartHour;
             isDay = IsHourInDay(hours);
             LogCurrentTime();
         }
 
         void Update()
         {
-            if (config == false)
-            {
+            if (settings == false)
                 return;
-            }
 
             bool wasDay = isDay;
             int previousHour = Hour;
@@ -55,9 +48,7 @@ namespace Core
             isDay = IsHourInDay(hours);
 
             if (previousHour != Hour)
-            {
                 LogCurrentTime();
-            }
 
             if (wasDay == false && isDay)
             {
@@ -74,18 +65,18 @@ namespace Core
 
         void AdvanceTime(float deltaTime)
         {
-            float hoursPerSecond = HOURS_PER_DAY / config.SecondsPerDay;
+            float hoursPerSecond = HoursPerDay / settings.SecondsPerDay;
             hours += deltaTime * hoursPerSecond;
 
-            while (hours >= HOURS_PER_DAY)
+            while (hours >= HoursPerDay)
             {
-                hours -= HOURS_PER_DAY;
+                hours -= HoursPerDay;
             }
         }
 
         bool IsHourInDay(float hourOfDay)
         {
-            return hourOfDay >= config.DayStartHour && hourOfDay < config.NightStartHour;
+            return hourOfDay >= settings.DayStartHour && hourOfDay < settings.NightStartHour;
         }
 
         void LogCurrentTime()

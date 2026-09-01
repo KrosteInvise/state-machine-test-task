@@ -1,0 +1,80 @@
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+
+# Временные файлы Unity 6+ (включая Android сборки)
+.utmp/
+
+# Кэш памяти и записей
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# Кэш шейдеров и зависимостей сцен
+[Ss]ceneDependencyCache/
+
+# Исключение ассетов, генерируемых внешними программами
+*.blend1
+*.blend1.meta
+*.blend2
+*.blend2.meta
+*.blend3
+*.blend3.meta
+*.blend4
+*.blend4.meta
+
+# Текстурные атласы, если они генерируются автоматически
+/[Aa]ssets/[Aa]ssetStoreTools*
+
+# Автоматически генерируемые файлы плагинов (например, Addressables)
+/[Aa]ssets/AddressableAssetsData/*/*.bin*
+/[Aa]ssets/StreamingAssets/aa.meta
+/[Aa]ssets/StreamingAssets/aa/
+
+*.apk
+*.aab
+*.unitypackage
+*.unitypackage.meta
+*.app
+
+# Проекты и решения (Unity пересоздает их автоматически)
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# JetBrains Rider
+.idea/
+*.DotSettings.user
+
+# Visual Studio / VS Code
+.cursorignore
+.vs/
+.vscode/
+*.atmo
+
+# Данные компиляции crashlytics
+crashlytics-build.properties
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride

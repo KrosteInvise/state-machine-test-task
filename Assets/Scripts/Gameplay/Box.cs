@@ -17,7 +17,7 @@ namespace Gameplay
         public bool IsAvailable => owner == null;
         public bool IsReserved => owner != null;
 
-        void Awake()
+        void Start()
         {
             meshRenderer = GetComponent<MeshRenderer>();
             ApplyView();

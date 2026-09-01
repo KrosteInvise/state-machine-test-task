@@ -41,6 +41,7 @@ namespace Gameplay
                 return;
 
             box.ResetState();
+            box.transform.SetParent(transform);
             box.gameObject.SetActive(false);
             idleBoxes.Push(box);
         }

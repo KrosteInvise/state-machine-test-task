@@ -46,6 +46,26 @@ namespace Core
         [Tooltip("How many boxes may exist at once.")]
         int maxBoxes = 12;
 
+        [SerializeField]
+        [Min(1f)]
+        [Tooltip("Width of the warehouse drop-off zone along X.")]
+        float warehouseWidth = 3f;
+
+        [SerializeField]
+        [Min(1f)]
+        [Tooltip("Depth of the warehouse drop-off zone along Z.")]
+        float warehouseDepth = 3f;
+
+        [SerializeField]
+        [Min(1)]
+        [Tooltip("How many NPCs work at the same time.")]
+        int npcCount = 4;
+
+        [SerializeField]
+        [Min(0.1f)]
+        [Tooltip("NPC movement speed in meters per second.")]
+        float npcMoveSpeed = 3.5f;
+
         public float SecondsPerDay => secondsPerDay;
         public float DayStartHour => dayStartHour;
         public float NightStartHour => nightStartHour;
@@ -54,6 +74,10 @@ namespace Core
         public float SpawnAreaWidth => spawnAreaWidth;
         public float SpawnAreaDepth => spawnAreaDepth;
         public int MaxBoxes => maxBoxes;
+        public float WarehouseWidth => warehouseWidth;
+        public float WarehouseDepth => warehouseDepth;
+        public int NpcCount => npcCount;
+        public float NpcMoveSpeed => npcMoveSpeed;
 
         void OnValidate()
         {
@@ -69,6 +93,10 @@ namespace Core
             spawnAreaWidth = Mathf.Max(1f, spawnAreaWidth);
             spawnAreaDepth = Mathf.Max(1f, spawnAreaDepth);
             maxBoxes = Mathf.Max(1, maxBoxes);
+            warehouseWidth = Mathf.Max(1f, warehouseWidth);
+            warehouseDepth = Mathf.Max(1f, warehouseDepth);
+            npcCount = Mathf.Max(1, npcCount);
+            npcMoveSpeed = Mathf.Max(0.1f, npcMoveSpeed);
         }
 
         static float WrapHour(float hour)

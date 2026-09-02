@@ -6,6 +6,7 @@ namespace Core
     [CreateAssetMenu(fileName = "LogisticsSettings", menuName = "Logistics/Config")]
     public class LogisticsSettings : ScriptableObject
     {
+        [Header("Time")]
         [SerializeField]
         [FormerlySerializedAs("_secondsPerDay")]
         [Min(1f)]
@@ -26,6 +27,7 @@ namespace Core
         [Range(0f, GameTime.HoursPerDay)]
         float startHour = 8f;
 
+        [Header("Boxes")]
         [SerializeField]
         [Min(0.1f)]
         [Tooltip("Real seconds between box appearances.")]
@@ -46,6 +48,7 @@ namespace Core
         [Tooltip("How many boxes may exist at once.")]
         int maxBoxes = 12;
 
+        [Header("Warehouse")]
         [SerializeField]
         [Min(1f)]
         [Tooltip("Width of the warehouse drop-off zone along X.")]
@@ -56,6 +59,7 @@ namespace Core
         [Tooltip("Depth of the warehouse drop-off zone along Z.")]
         float warehouseDepth = 3f;
 
+        [Header("NPCs")]
         [SerializeField]
         [Min(1)]
         [Tooltip("How many NPCs work at the same time.")]

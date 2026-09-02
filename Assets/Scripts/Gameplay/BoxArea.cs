@@ -6,16 +6,15 @@ namespace Gameplay
 {
     public class BoxArea : MonoBehaviour
     {
-        const float half = 0.5f;
-        const float gizmoHeight = 0.1f;
-
         [SerializeField]
         Box boxPrefab;
 
         LogisticsSettings settings;
-        readonly Stack<Box> idleBoxes = new Stack<Box>();
-        readonly List<Box> activeBoxes = new List<Box>();
+        Stack<Box> idleBoxes = new Stack<Box>();
+        List<Box> activeBoxes = new List<Box>();
         float spawnCooldown;
+
+        float half = 0.5f;
 
         public bool TryFindAvailable(out Box box)
         {
@@ -86,7 +85,7 @@ namespace Gameplay
                 return;
 
             Gizmos.color = Color.yellow;
-            Vector3 size = new Vector3(settings.SpawnAreaWidth, gizmoHeight, settings.SpawnAreaDepth);
+            Vector3 size = new Vector3(settings.SpawnAreaWidth, 0.1f, settings.SpawnAreaDepth);
             Gizmos.DrawWireCube(transform.position, size);
         }
 

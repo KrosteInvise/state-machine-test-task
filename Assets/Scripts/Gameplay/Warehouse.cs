@@ -5,15 +5,15 @@ namespace Gameplay
 {
     public class Warehouse : MonoBehaviour
     {
-        const float half = 0.5f;
-        const float platformHeight = 0.3f;
-
         [SerializeField]
         Color platformColor = new(0.2f, 0.45f, 0.75f);
 
         LogisticsSettings settings;
         BoxArea boxArea;
         MeshRenderer meshRenderer;
+
+        float half = 0.5f;
+        float platformHeight = 0.3f;
 
         public Vector3 DropPoint => transform.position;
 

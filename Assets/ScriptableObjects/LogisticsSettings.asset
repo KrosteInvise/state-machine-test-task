@@ -12,7 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7a9c1d3f5b8492e8a0c2d4f6b8e0a12, type: 3}
   m_Name: LogisticsSettings
   m_EditorClassIdentifier: 
-  _secondsPerDay: 120
-  _dayStartHour: 6
-  _nightStartHour: 22
-  _startHour: 8
+  secondsPerDay: 120
+  dayStartHour: 6
+  nightStartHour: 22
+  startHour: 8
+  boxSpawnInterval: 1
+  spawnAreaWidth: 8
+  spawnAreaDepth: 8
+  maxBoxes: 12
+  warehouseWidth: 3
+  warehouseDepth: 3
+  npcCount: 4
+  npcMoveSpeed: 3.5

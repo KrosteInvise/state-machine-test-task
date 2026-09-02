@@ -10,8 +10,8 @@ namespace Gameplay
         Box boxPrefab;
 
         LogisticsSettings settings;
-        Stack<Box> idleBoxes = new Stack<Box>();
-        List<Box> activeBoxes = new List<Box>();
+        Stack<Box> idleBoxes = new();
+        List<Box> activeBoxes = new();
         float spawnCooldown;
 
         float half = 0.5f;
@@ -67,9 +67,6 @@ namespace Gameplay
 
         void Update()
         {
-            if (settings == false)
-                return;
-
             spawnCooldown -= Time.deltaTime;
 
             if (spawnCooldown > 0f)
@@ -89,17 +86,16 @@ namespace Gameplay
             Gizmos.DrawWireCube(transform.position, size);
         }
 
-        bool TrySpawn()
+        void TrySpawn()
         {
-            if (idleBoxes.Count == 0)
-                return false;
+            if (idleBoxes.Count == 0) 
+                return;
 
             Box box = idleBoxes.Pop();
             box.ResetState();
             box.transform.position = GetRandomPoint();
             box.gameObject.SetActive(true);
             activeBoxes.Add(box);
-            return true;
         }
 
         void WarmupPool()

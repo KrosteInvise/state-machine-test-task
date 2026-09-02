@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Core
 {
@@ -8,67 +7,59 @@ namespace Core
     {
         [Header("Time")]
         [SerializeField]
-        [FormerlySerializedAs("_secondsPerDay")]
         [Min(1f)]
         float secondsPerDay = 120f;
 
         [SerializeField]
-        [FormerlySerializedAs("_dayStartHour")]
         [Range(0f, GameTime.HoursPerDay)]
         float dayStartHour = 6f;
 
         [SerializeField]
-        [FormerlySerializedAs("_nightStartHour")]
         [Range(0f, GameTime.HoursPerDay)]
         float nightStartHour = 22f;
 
         [SerializeField]
-        [FormerlySerializedAs("_startHour")]
         [Range(0f, GameTime.HoursPerDay)]
         float startHour = 8f;
 
         [Header("Boxes")]
         [SerializeField]
         [Min(0.1f)]
-        [Tooltip("Real seconds between box appearances.")]
         float boxSpawnInterval = 3f;
 
         [SerializeField]
         [Min(1f)]
-        [Tooltip("Width of the random spawn area along X.")]
         float spawnAreaWidth = 8f;
 
         [SerializeField]
         [Min(1f)]
-        [Tooltip("Depth of the random spawn area along Z.")]
         float spawnAreaDepth = 8f;
 
         [SerializeField]
         [Min(1)]
-        [Tooltip("How many boxes may exist at once.")]
         int maxBoxes = 12;
 
         [Header("Warehouse")]
         [SerializeField]
         [Min(1f)]
-        [Tooltip("Width of the warehouse drop-off zone along X.")]
         float warehouseWidth = 3f;
 
         [SerializeField]
         [Min(1f)]
-        [Tooltip("Depth of the warehouse drop-off zone along Z.")]
         float warehouseDepth = 3f;
 
         [Header("NPCs")]
         [SerializeField]
         [Min(1)]
-        [Tooltip("How many NPCs work at the same time.")]
         int npcCount = 4;
 
         [SerializeField]
         [Min(0.1f)]
-        [Tooltip("NPC movement speed in meters per second.")]
         float npcMoveSpeed = 3.5f;
+
+        [SerializeField]
+        [Min(0.1f)]
+        float npcNightMoveSpeed = 1.1f;
 
         public float SecondsPerDay => secondsPerDay;
         public float DayStartHour => dayStartHour;
@@ -82,6 +73,7 @@ namespace Core
         public float WarehouseDepth => warehouseDepth;
         public int NpcCount => npcCount;
         public float NpcMoveSpeed => npcMoveSpeed;
+        public float NpcNightMoveSpeed => npcNightMoveSpeed;
 
         void OnValidate()
         {
@@ -101,9 +93,10 @@ namespace Core
             warehouseDepth = Mathf.Max(1f, warehouseDepth);
             npcCount = Mathf.Max(1, npcCount);
             npcMoveSpeed = Mathf.Max(0.1f, npcMoveSpeed);
+            npcNightMoveSpeed = Mathf.Max(0.1f, npcNightMoveSpeed);
         }
 
-        static float WrapHour(float hour)
+        float WrapHour(float hour)
         {
             float wrappedHour = hour % GameTime.HoursPerDay;
 

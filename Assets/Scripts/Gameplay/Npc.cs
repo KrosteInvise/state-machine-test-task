@@ -12,9 +12,14 @@ namespace Gameplay
         [SerializeField]
         Color bodyColor = new(0.25f, 0.7f, 0.3f);
 
+        [SerializeField]
+        Color nightBodyColor = new(0.12f, 0.32f, 0.55f);
+
         BoxArea boxArea;
         Warehouse warehouse;
         LogisticsSettings settings;
+        GameTime gameTime;
+        MeshRenderer meshRenderer;
         StateMachine stateMachine;
         NpcIdleState idleState;
         NpcFindBoxState findBoxState;
@@ -38,11 +43,13 @@ namespace Gameplay
         public Box CarriedBox => carriedBox;
         public float IdleWait => idleWait;
 
-        public void Init(BoxArea area, Warehouse dropZone, LogisticsSettings logisticsSettings)
+        float CurrentMoveSpeed => gameTime.IsNight ? settings.NpcNightMoveSpeed : settings.NpcMoveSpeed;
+
+        public void Init(BoxArea area, Warehouse dropZone, LogisticsSettings logisticsSettings, GameTime time)
         {
-            if (area == false || dropZone == false || logisticsSettings == false)
+            if (area == false || dropZone == false || logisticsSettings == false || time == false)
             {
-                Debug.LogError("Npc needs BoxArea, Warehouse and LogisticsSettings.");
+                Debug.LogError("Npc needs BoxArea, Warehouse, LogisticsSettings and GameTime.");
                 enabled = false;
                 return;
             }
@@ -50,6 +57,10 @@ namespace Gameplay
             boxArea = area;
             warehouse = dropZone;
             settings = logisticsSettings;
+            gameTime = time;
+            meshRenderer = GetComponent<MeshRenderer>();
+            gameTime.DayStarted += ApplyView;
+            gameTime.NightStarted += ApplyView;
             ApplyView();
             BuildStates();
             stateMachine.ChangeState(findBoxState);
@@ -85,7 +96,7 @@ namespace Gameplay
         {
             Vector3 currentPosition = transform.position;
             Vector3 targetPosition = new Vector3(worldPosition.x, currentPosition.y, worldPosition.z);
-            transform.position = Vector3.MoveTowards(currentPosition, targetPosition, settings.NpcMoveSpeed * deltaTime);
+            transform.position = Vector3.MoveTowards(currentPosition, targetPosition, CurrentMoveSpeed * deltaTime);
 
             Vector3 direction = targetPosition - currentPosition;
             direction.y = 0f;
@@ -122,14 +133,22 @@ namespace Gameplay
             dropOffState = new NpcDropOffState(this);
         }
 
+        void OnDestroy()
+        {
+            if (gameTime == false)
+                return;
+
+            gameTime.DayStarted -= ApplyView;
+            gameTime.NightStarted -= ApplyView;
+        }
+
         void ApplyView()
         {
-            MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-
             if (meshRenderer == false)
                 return;
 
-            meshRenderer.material.color = bodyColor;
+            Color color = gameTime.IsNight ? nightBodyColor : bodyColor;
+            meshRenderer.material.color = color;
         }
     }
 }

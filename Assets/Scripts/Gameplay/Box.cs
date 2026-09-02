@@ -11,11 +11,12 @@ namespace Gameplay
         Color reservedColor = new(0.35f, 0.35f, 0.38f);
 
         MeshRenderer meshRenderer;
-        object owner;
+        Npc owner;
 
         public float GroundOffset => transform.localScale.y * 0.5f;
         public bool IsAvailable => owner == null;
-        public bool IsReserved => owner != null;
+        
+        bool IsReserved => owner != null;
 
         void Start()
         {
@@ -23,7 +24,7 @@ namespace Gameplay
             ApplyView();
         }
 
-        public bool TryReserve(object taker)
+        public bool TryReserve(Npc taker)
         {
             if (taker == null)
                 return false;
@@ -34,15 +35,6 @@ namespace Gameplay
             owner = taker;
             ApplyView();
             return true;
-        }
-
-        public void Release(object taker)
-        {
-            if (owner != taker)
-                return;
-
-            owner = null;
-            ApplyView();
         }
 
         public void ResetState()

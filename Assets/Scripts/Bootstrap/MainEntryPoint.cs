@@ -1,5 +1,6 @@
 using Core;
 using Gameplay;
+using UI;
 using UnityEngine;
 
 namespace Bootstrap
@@ -21,12 +22,20 @@ namespace Bootstrap
         [SerializeField]
         NpcArea npcArea;
 
+        [SerializeField]
+        DayNightLighting dayNightLighting;
+
+        [SerializeField]
+        ClockHud clockHud;
+
         void Awake()
         {
             gameTime.Init(settings);
+            dayNightLighting.Init(gameTime);
+            clockHud.Init(gameTime);
             boxArea.Init(settings);
             warehouse.Init(settings, boxArea);
-            npcArea.Init(settings, boxArea, warehouse);
+            npcArea.Init(settings, boxArea, warehouse, gameTime);
         }
     }
 }

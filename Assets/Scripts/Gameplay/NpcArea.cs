@@ -16,7 +16,7 @@ namespace Gameplay
         float gizmoRadius = 0.35f;
         int gizmoSlots = 3;
 
-        public void Init(LogisticsSettings settings, BoxArea boxArea, Warehouse warehouse)
+        public void Init(LogisticsSettings settings, BoxArea boxArea, Warehouse warehouse, GameTime gameTime)
         {
             if (settings == false)
             {
@@ -32,14 +32,14 @@ namespace Gameplay
                 return;
             }
 
-            if (boxArea == false || warehouse == false)
+            if (boxArea == false || warehouse == false || gameTime == false)
             {
-                Debug.LogError("NpcArea needs BoxArea and Warehouse assigned.");
+                Debug.LogError("NpcArea needs BoxArea, Warehouse and GameTime assigned.");
                 enabled = false;
                 return;
             }
 
-            SpawnNpcs(settings, boxArea, warehouse);
+            SpawnNpcs(settings, boxArea, warehouse, gameTime);
         }
 
         void OnDrawGizmos()
@@ -49,7 +49,7 @@ namespace Gameplay
             Gizmos.DrawWireCube(transform.position, size);
         }
 
-        void SpawnNpcs(LogisticsSettings settings, BoxArea boxArea, Warehouse warehouse)
+        void SpawnNpcs(LogisticsSettings settings, BoxArea boxArea, Warehouse warehouse, GameTime gameTime)
         {
             float startX = -(settings.NpcCount - 1) * spacing * half;
 
@@ -58,7 +58,7 @@ namespace Gameplay
                 Vector3 localOffset = new Vector3(startX + index * spacing, 0f, 0f);
                 Vector3 position = transform.TransformPoint(localOffset);
                 Npc npc = Instantiate(npcPrefab, position, transform.rotation, transform);
-                npc.Init(boxArea, warehouse, settings);
+                npc.Init(boxArea, warehouse, settings, gameTime);
             }
         }
     }

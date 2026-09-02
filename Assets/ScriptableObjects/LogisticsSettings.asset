@@ -24,3 +24,4 @@ MonoBehaviour:
   warehouseDepth: 3
   npcCount: 4
   npcMoveSpeed: 3.5
+  npcNightMoveSpeed: 1.1
